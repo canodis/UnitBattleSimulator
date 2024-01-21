@@ -1,20 +1,20 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Building : GridObject
+public abstract class Building : GridObject
 {
     protected bool isProducer;
-    private InfoPanelController _infoPanelController;
+    protected InfoPanelController _infoPanelController;
 
     private void Start()
     {
         _infoPanelController = GameObject.FindWithTag("InfoPanelController").GetComponent<InfoPanelController>();
     }
 
-    protected void OnMouseUp()
+    protected virtual void OnMouseUp()
     {
         if (objectData == null || InputManager.Instance.IsMouseOverUI())
             return;
-        _infoPanelController.UpdateInfoPanel(objectData.Name, objectData.Sprite, isProducer);
+        _infoPanelController.UpdateInfoPanel(objectData.Name, objectData.Sprite);
     }
 }

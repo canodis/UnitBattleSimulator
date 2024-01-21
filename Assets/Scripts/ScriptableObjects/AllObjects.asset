@@ -25,3 +25,9 @@ MonoBehaviour:
     <Prefab>k__BackingField: {fileID: 647657920539125572, guid: a9d1130e241ff354faab9590dd932532, type: 3}
     <Sprite>k__BackingField: {fileID: 21300000, guid: 3cc88ee0a32d28f4f930543991165444, type: 3}
     <MaxHealth>k__BackingField: 50
+  - <Name>k__BackingField: Solider1
+    <Id>k__BackingField: 2
+    <Size>k__BackingField: {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 2935892757841520516, guid: 673003cf15dfb8c448c193eeaad186bf, type: 3}
+    <Sprite>k__BackingField: {fileID: 1503628492, guid: 2a106c76c0dd1194f982c563c87a664c, type: 3}
+    <MaxHealth>k__BackingField: 50

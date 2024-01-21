@@ -6196,6 +6196,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 679218569}
+  - component: {fileID: 679218570}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -6211,7 +6212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679218568}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 807.2062, y: 557.7353, z: 4.4731855}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6222,6 +6223,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &679218570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679218568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ed4e7f4edf6d5f40ad2c4ce8cf1f7c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewSystem: {fileID: 1561986962}
+  objectManager: {fileID: 964655892}
+  allObjects: {fileID: 11400000, guid: ba90fa5711669fa4da45f2a3f1241db9, type: 2}
+  gridData: {fileID: 1688962511}
 --- !u!1 &739859073
 GameObject:
   m_ObjectHideFlags: 0
@@ -6266,11 +6283,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94925bd486fa05344aabd8cd78229752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputManager: {fileID: 606482065}
   _grid: {fileID: 1688962509}
-  _allObjects: {fileID: 11400000, guid: ba90fa5711669fa4da45f2a3f1241db9, type: 2}
+  _inputManager: {fileID: 606482065}
   _previewSystem: {fileID: 1561986962}
-  _gridData: {fileID: 1688962511}
   _objectManager: {fileID: 964655892}
 --- !u!1 &747109863
 GameObject:
@@ -6305,9 +6320,9 @@ RectTransform:
   m_Father: {fileID: 917219436}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 241.445, y: -283.8381}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &747109865
@@ -6330,7 +6345,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ab217cb49e2040049a68770abb3fd3b4, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6538,9 +6553,9 @@ RectTransform:
   m_Father: {fileID: 1474317116}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 241.445, y: -259.615}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 482.89, y: 519.23}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &917219437
@@ -11435,7 +11450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1474317116
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11626,11 +11641,13 @@ MonoBehaviour:
   _scrollRect: {fileID: 1587486998}
   _transform: {fileID: 1587486996}
   _content: {fileID: 604282175}
+  _linePrefab: {fileID: 705333256929589984, guid: e1b859d7ed929b542a065ddebe2e8674, type: 3}
   _outOfBoundsThreashold: 40
   _childWidth: 400
   _childHeight: 200
   _spacing: 30
   _lineCount: 5
+  _positiveDrag: 1
 --- !u!114 &1587486998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11650,7 +11667,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 0
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 25
+  m_ScrollSensitivity: 0
   m_Viewport: {fileID: 0}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -11934,9 +11951,9 @@ RectTransform:
   m_Father: {fileID: 917219436}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 241.445, y: -79.41905}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 482.89, y: 58.8381}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1756934652
@@ -11959,7 +11976,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Barracks
+  m_text: Title
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

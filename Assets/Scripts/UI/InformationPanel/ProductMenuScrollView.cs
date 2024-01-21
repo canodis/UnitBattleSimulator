@@ -14,6 +14,7 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private Transform _transform;
     [SerializeField] private Transform _content;
+    [SerializeField] private GameObject _linePrefab;
     [SerializeField] private float _outOfBoundsThreashold = 40.0f;
     [SerializeField] private float _childWidth = 200.0f;
     [SerializeField] private float _childHeight = 200.0f;
@@ -21,17 +22,17 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
     [SerializeField] private int _lineCount;
 
     private Vector2 _lastDragPosition;
-    private bool _positiveDrag = true;
+    [SerializeField] private bool _positiveDrag = true;
     private int _childCount = 0;
-    private float _heigth = 0.0f;
+    private float _height = 0.0f;
 
     IEnumerator Start()
     {
         CreateItems();
         _childCount = _scrollRect.content.childCount;
-        _heigth = _transform.GetComponent<RectTransform>().rect.height;
+        _height = _transform.GetComponent<RectTransform>().rect.height;
 
-        _scrollRect.content.localPosition = Vector3.up * _heigth * 3.0f;
+        _scrollRect.content.localPosition = Vector3.up * _height * 3.0f;
 
         yield return new WaitForEndOfFrame();
         for (int i = 0; i < 20; i++)
@@ -68,8 +69,8 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
 
     private bool ReachedThreshold(Transform item)
     {
-        float positiveYThreshold = _transform.position.y + _heigth * 0.5f + _outOfBoundsThreashold;
-        float negativeYThreshold = _transform.position.y - _heigth * 0.5f - _outOfBoundsThreashold;
+        float positiveYThreshold = _transform.position.y + _height * 0.5f + _outOfBoundsThreashold;
+        float negativeYThreshold = _transform.position.y - _height * 0.5f - _outOfBoundsThreashold;
         return _positiveDrag ? item.position.y - _childHeight * 0.5f > positiveYThreshold
             : item.position.y + _childHeight * 0.5f < negativeYThreshold;
     }
@@ -89,11 +90,11 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
 
         if (_positiveDrag)
         {
-            newPosition.y = endItem.position.y - _childHeight * 1.5f + _spacing;
+            newPosition.y = endItem.position.y - _childHeight * 1.5f - _spacing;
         }
         else
         {
-            newPosition.y = endItem.position.y + _childHeight * 1.5f - _spacing;
+            newPosition.y = endItem.position.y + _childHeight * 1.5f + _spacing;
         }
 
         currentItem.position = newPosition;
@@ -104,9 +105,8 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
     {
         for (int i = 0; i < _lineCount; i++)
         {
-            GameObject line = Instantiate(new GameObject($"Line {i}"), _content);
-            line.AddComponent<RectTransform>().sizeDelta = new Vector2(_childWidth, _childHeight);
-            line.AddComponent<HorizontalLayoutGroup>();
+            GameObject line = Instantiate(_linePrefab, _content);
+            line.GetComponent<RectTransform>().sizeDelta = new Vector2(_childWidth, _childHeight);
             for (int j = 0; j < _items.Length; j++)
             {
                 Instantiate(_items[j], line.transform);

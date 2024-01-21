@@ -8,7 +8,7 @@ public class TilemapController : MonoBehaviour
     [SerializeField] private int _neighborThreshold;
 
     private Dictionary<Vector3Int, bool> tileMapData = new();
-    // 100.000 cell = 1.3mb memory usage
+
     void Start()
     {
         InitTileMapData();
