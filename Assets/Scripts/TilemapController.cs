@@ -4,14 +4,15 @@ using UnityEngine.Tilemaps;
 
 public class TilemapController : MonoBehaviour
 {
-    [SerializeField] private Tilemap floorTilemap;
-    [SerializeField] private int neighborThreshold;
-    private Dictionary<Vector3Int, bool> tileMapData = new Dictionary<Vector3Int, bool>();
+    [SerializeField] private Tilemap _floorTilemap;
+    [SerializeField] private int _neighborThreshold;
 
+    private Dictionary<Vector3Int, bool> tileMapData = new();
+    // 100.000 cell = 1.3mb memory usage
     void Start()
     {
         InitTileMapData();
-        AdjustTilemapAccessibility(neighborThreshold);
+        AdjustTilemapAccessibility(_neighborThreshold);
     }
 
     public bool canPlaceObject(Vector3Int cellPosition, Vector2Int size)
@@ -62,20 +63,15 @@ public class TilemapController : MonoBehaviour
 
     private void InitTileMapData()
     {
-        for (int y = floorTilemap.cellBounds.yMin; y < floorTilemap.cellBounds.yMax; y++)
+        for (int y = _floorTilemap.cellBounds.yMin; y < _floorTilemap.cellBounds.yMax; y++)
         {
-            for (int x = floorTilemap.cellBounds.xMin; x < floorTilemap.cellBounds.xMax; x++)
+            for (int x = _floorTilemap.cellBounds.xMin; x < _floorTilemap.cellBounds.xMax; x++)
             {
                 Vector3Int cellPosition = new Vector3Int(x, y, 0);
-                if (floorTilemap.HasTile(cellPosition))
+                if (_floorTilemap.HasTile(cellPosition))
                 {
                     tileMapData.Add(cellPosition, true);
                 }
-                else
-                {
-                    tileMapData.Add(cellPosition, false);
-                }
-
             }
         }
     }
@@ -86,7 +82,7 @@ public class TilemapController : MonoBehaviour
     /// <param name="neighborThreshold">Minimum number of true neighbors required to keep a tile true.</param>
     private void AdjustTilemapAccessibility(int neighborThreshold)
     {
-        BoundsInt bounds = floorTilemap.cellBounds;
+        BoundsInt bounds = _floorTilemap.cellBounds;
         Dictionary<Vector3Int, bool> updatedTileMapData = new Dictionary<Vector3Int, bool>(tileMapData);
 
         foreach (var cell in tileMapData.Keys)

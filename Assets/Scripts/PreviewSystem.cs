@@ -3,29 +3,29 @@ using UnityEngine;
 
 public class PreviewSystem : MonoBehaviour
 {
-    [SerializeField] private GameObject cellCursor;
-    private GameObject gameObjectPreview;
-    private SpriteRenderer cellCursorSpriteRenderer;
+    [SerializeField] private GameObject _cellCursor;
+    private GameObject _gameObjectPreview;
+    private SpriteRenderer _cellCursorSpriteRenderer;
 
     private void Start()
     {
-        cellCursor.SetActive(false);
-        cellCursorSpriteRenderer = cellCursor.GetComponentInChildren<SpriteRenderer>();
+        _cellCursor.SetActive(false);
+        _cellCursorSpriteRenderer = _cellCursor.GetComponentInChildren<SpriteRenderer>();
     }
 
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
-        gameObjectPreview = Instantiate(prefab);
+        _gameObjectPreview = Instantiate(prefab);
         PrepareCursor(size);
-        PreparePreview(gameObjectPreview);
-        cellCursor.SetActive(true);
+        PreparePreview(_gameObjectPreview);
+        _cellCursor.SetActive(true);
     }
 
     private void PrepareCursor(Vector2Int size)
     {
         if (size.x > 0 || size.y > 0)
         {
-            cellCursor.transform.localScale = new Vector3(size.x, size.y, 1);
+            _cellCursor.transform.localScale = new Vector3(size.x, size.y, 1);
         }
     }
 
@@ -45,22 +45,22 @@ public class PreviewSystem : MonoBehaviour
     private void ApplyFeedback(bool validity)
     {
         Color color = validity ? Color.green : Color.red;
-        cellCursorSpriteRenderer.color = color;
+        _cellCursorSpriteRenderer.color = color;
     }
 
     private void MoveCursor(Vector3 position)
     {
-        cellCursor.transform.position = position;
+        _cellCursor.transform.position = position;
     }
 
     private void MovePreview(Vector3 position)
     {
-        gameObjectPreview.transform.position = position;
+        _gameObjectPreview.transform.position = position;
     }
 
     public void StopShowingPreview()
     {
-        Destroy(gameObjectPreview);
-        cellCursor.SetActive(false);
+        Destroy(_gameObjectPreview);
+        _cellCursor.SetActive(false);
     }
 }
