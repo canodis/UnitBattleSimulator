@@ -15,7 +15,6 @@ public class InfoPanelController : MonoBehaviour
         _model.Name = name;
         _model.Sprite = sprite;
         _infoPanelView.ShowInfo(_model);
-        InputManager.Instance.OnClicked += HideInfoPanel;
     }
 
     public void ShowProductPanel(Unit[] units)
@@ -26,7 +25,6 @@ public class InfoPanelController : MonoBehaviour
     public void HideInfoPanel()
     {
         _infoPanelView.HideInfo();
-        InputManager.Instance.OnClicked -= HideInfoPanel;
     }
 }
 

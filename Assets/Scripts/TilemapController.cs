@@ -7,7 +7,7 @@ public class TilemapController : MonoBehaviour
     [SerializeField] private Tilemap _floorTilemap;
     [SerializeField] private int _neighborThreshold;
 
-    private Dictionary<Vector3Int, bool> tileMapData = new();
+    private Dictionary<Vector3Int, PlacementData> tileMapData = new();
 
     void Start()
     {
@@ -15,13 +15,13 @@ public class TilemapController : MonoBehaviour
         AdjustTilemapAccessibility(_neighborThreshold);
     }
 
-    public bool canPlaceObject(Vector3Int cellPosition, Vector2Int size)
+    public bool CanPlaceObject(Vector3Int cellPosition, Vector2Int size)
     {
         for (int y = cellPosition.y; y < cellPosition.y + size.y; y++)
         {
             for (int x = cellPosition.x; x < cellPosition.x + size.x; x++)
             {
-                Vector3Int cell = new Vector3Int(x, y, 0);
+                Vector3Int cell = new Vector3Int(x, y);
                 if (IsCellEmpty(cell) == false)
                 {
                     return false;
@@ -31,29 +31,40 @@ public class TilemapController : MonoBehaviour
         return true;
     }
 
-    public bool placeObjectToCells(Vector3Int cellPosition, Vector2Int size)
+    public bool PlaceObjectToCells(Vector3Int cellPosition, Vector2Int size, int index)
     {
-        if (canPlaceObject(cellPosition, size) == false)
+        List<Vector2Int> rentedCells = GetRentedCells(cellPosition, size);
+        PlacementData placementData = new PlacementData(rentedCells, index);
+        for (int y = cellPosition.y; y < cellPosition.y + size.y; y++)
         {
-            Debug.LogError($"Cannot place object at {cellPosition}");
-            return false;
+            for (int x = cellPosition.x; x < cellPosition.x + size.x; x++)
+            {
+                Vector3Int cell = new Vector3Int(x, y);
+                tileMapData[cell] = placementData;
+            }
         }
+        return true;
+    }
+
+    private List<Vector2Int> GetRentedCells(Vector3Int cellPosition, Vector2Int size)
+    {
+        List<Vector2Int> rentedCells = new List<Vector2Int>();
         for (int y = cellPosition.y; y < cellPosition.y + size.y; y++)
         {
             for (int x = cellPosition.x; x < cellPosition.x + size.x; x++)
             {
                 Vector3Int cell = new Vector3Int(x, y, 0);
-                tileMapData[cell] = false;
+                rentedCells.Add(new Vector2Int(cell.x, cell.y));
             }
         }
-        return true;
+        return rentedCells;
     }
 
     private bool IsCellEmpty(Vector3Int cellPosition)
     {
         if (tileMapData.ContainsKey(cellPosition))
         {
-            return tileMapData[cellPosition];
+            return tileMapData[cellPosition] == null;
         }
         else
         {
@@ -70,7 +81,7 @@ public class TilemapController : MonoBehaviour
                 Vector3Int cellPosition = new Vector3Int(x, y, 0);
                 if (_floorTilemap.HasTile(cellPosition))
                 {
-                    tileMapData.Add(cellPosition, true);
+                    tileMapData.Add(cellPosition, null);
                 }
             }
         }
@@ -83,14 +94,14 @@ public class TilemapController : MonoBehaviour
     private void AdjustTilemapAccessibility(int neighborThreshold)
     {
         BoundsInt bounds = _floorTilemap.cellBounds;
-        Dictionary<Vector3Int, bool> updatedTileMapData = new Dictionary<Vector3Int, bool>(tileMapData);
+        Dictionary<Vector3Int, PlacementData> updatedTileMapData = new(tileMapData);
 
         foreach (var cell in tileMapData.Keys)
         {
             int neighborCount = CountTrueNeighbors(cell, bounds);
             if (neighborCount < neighborThreshold)
             {
-                updatedTileMapData[cell] = false;
+                updatedTileMapData[cell] = new PlacementData(new List<Vector2Int>(), -1);
             }
         }
 
@@ -114,13 +125,38 @@ public class TilemapController : MonoBehaviour
                 if (x == 0 && y == 0) continue;
 
                 Vector3Int neighborPosition = new Vector3Int(cell.x + x, cell.y + y, cell.z);
-                if (bounds.Contains(neighborPosition) && tileMapData.TryGetValue(neighborPosition, out bool isTrue) && isTrue)
+                if (bounds.Contains(neighborPosition) && tileMapData.TryGetValue(neighborPosition, out PlacementData isAvailable)
+                    && isAvailable == null)
                 {
                     count++;
                 }
             }
         }
-
         return count;
     }
+
+    public void DestroyObject(Vector3Int cellPosition, Vector2Int size)
+    {
+        for (int y = cellPosition.y; y < cellPosition.y + size.y; y++)
+        {
+            for (int x = cellPosition.x; x < cellPosition.x + size.x; x++)
+            {
+                Vector3Int cell = new Vector3Int(x, y, 0);
+                tileMapData[cell] = null;
+            }
+        }
+    }
+
+    public int GetObjectIndex(Vector3Int cellPosition)
+    {
+        if (tileMapData.ContainsKey(cellPosition) && tileMapData[cellPosition] != null)
+        {
+            return tileMapData[cellPosition].Index;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - InfoPanelController
   - PlacementManager
+  - TilemapController
   layers:
   - Default
   - TransparentFX

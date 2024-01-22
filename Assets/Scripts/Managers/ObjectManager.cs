@@ -3,15 +3,26 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
-    [SerializeField] private Dictionary<int, GameObject> _instatiatedObjects = new();
+    [SerializeField] private List<GridObject> _instatiatedObjects = new();
 
     public int InstantiateObject(ObjectData objectData, Vector3Int gridPosition)
     {
-        GameObject gameObject = Instantiate(objectData.Prefab, gridPosition, Quaternion.identity);
-        int id = _instatiatedObjects.Count == 0 ? 0 : _instatiatedObjects.Keys.Count + 1;
-        _instatiatedObjects.Add(id, gameObject);
-        if (gameObject.GetComponent<GridObject>() != null)
-            gameObject.GetComponent<GridObject>().Init(objectData);
-        return id;
+        GridObject newObject = Instantiate(objectData.Prefab, gridPosition,
+            Quaternion.identity).GetComponent<GridObject>();
+        _instatiatedObjects.Add(newObject);
+        int index = _instatiatedObjects.Count - 1;
+        newObject.Init(objectData, gridPosition, index);
+        return index;
+    }
+
+    public void DestroyObject(int index)
+    {
+        Destroy(_instatiatedObjects[index].gameObject);
+        _instatiatedObjects.RemoveAt(index);
+    }
+
+    public GameObject GetObject(int index)
+    {
+        return _instatiatedObjects[index].gameObject;
     }
 }

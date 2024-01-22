@@ -1,16 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Tilemaps;
 
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
     [SerializeField] private Camera _mainCamera;
-    public event Action OnClicked;
+    [SerializeField] private Grid _grid;
+    public event Action OnRightClicked;
+    public event Action OnLeftClicked;
     public event Action OnExit;
+    public event Action OnMiddleClicked;
 
     private void Awake()
     {
@@ -22,9 +22,13 @@ public class InputManager : MonoBehaviour
         if (IsMouseOverUI())
             return;
         if (Input.GetMouseButtonDown(0))
-            OnClicked?.Invoke();
+            OnLeftClicked?.Invoke();
+        if (Input.GetMouseButtonDown(1))
+            OnRightClicked?.Invoke();
         if (Input.GetKeyDown(KeyCode.Escape))
             OnExit?.Invoke();
+        if (Input.GetMouseButtonDown(2))
+            OnMiddleClicked?.Invoke();
     }
 
     public bool IsMouseOverUI() => EventSystem.current.IsPointerOverGameObject();
@@ -32,5 +36,11 @@ public class InputManager : MonoBehaviour
     public Vector2 GetMousePosition()
     {
         return _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    public Vector3Int GetMouseGridPosition()
+    {
+        Vector2 mousePosition = GetMousePosition();
+        return _grid.WorldToCell(mousePosition);
     }
 }

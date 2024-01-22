@@ -6,18 +6,11 @@ public class PlacementState : IPlacementState
     private PreviewSystem _previewSystem;
     private ObjectManager _objectManager;
 
-    private bool isIdle;
 
-    public PlacementState(PreviewSystem previewSystem, ObjectManager objectManager)
+    public PlacementState(int Id, PreviewSystem previewSystem, ObjectManager objectManager)
     {
         this._previewSystem = previewSystem;
         this._objectManager = objectManager;
-        isIdle = true;
-    }
-
-    public void StartState(int Id)
-    {
-        isIdle = false;
         UIManager.Instance.HideBuildingsMenu();
         _selectedObjectIndex = GameManager.Instance.FindObjectIndexWithId(Id);
         if (_selectedObjectIndex > -1)
@@ -34,27 +27,23 @@ public class PlacementState : IPlacementState
     public void EndState()
     {
         _previewSystem.StopShowingPreview();
-        isIdle = true;
     }
 
     public void OnAction(Vector3Int gridPosition)
     {
         ObjectData objectData = GameManager.Instance.FindObjectDataWithIndex(_selectedObjectIndex);
-        if (GameManager.Instance.gridData.placeObjectToCells(gridPosition, objectData.Size) == false)
+        if (GameManager.Instance.gridData.CanPlaceObject(gridPosition, objectData.Size) == false)
             return;
-        _objectManager.InstantiateObject(objectData, gridPosition);
+        int index = _objectManager.InstantiateObject(objectData, gridPosition);
+        GameManager.Instance.gridData.PlaceObjectToCells(gridPosition, objectData.Size, index);
     }
 
     public void UpdateState(Vector3Int gridPosition)
     {
-        bool canPlace = GameManager.Instance.gridData.canPlaceObject(gridPosition,
+        bool canPlace = GameManager.Instance.gridData.CanPlaceObject(gridPosition,
             GameManager.Instance.allObjects.objectsData[_selectedObjectIndex].Size);
 
         _previewSystem.UpdatePosition(gridPosition, canPlace);
     }
 
-    public bool IsIdleState()
-    {
-        return isIdle;
-    }
 }

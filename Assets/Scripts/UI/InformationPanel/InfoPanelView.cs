@@ -8,6 +8,7 @@ public class InfoPanelView : MonoBehaviour
     [SerializeField] private TMP_Text _selectedObjectText;
     [SerializeField] private Image _selectedObjectImage;
     [SerializeField] private GameObject _productionPanel;
+    [SerializeField] private GameObject _productionPanelButtonsParent;
     [SerializeField] private GameObject _productionButtonPrefab;
 
     void Start()
@@ -24,9 +25,9 @@ public class InfoPanelView : MonoBehaviour
         _selectedObjectImage.sprite = objectData.Sprite;
     }
 
-    public void ShowProductPanel(Unit[] units)
+    public void  ShowProductPanel(Unit[] units)
     {
-        foreach (Transform child in _productionPanel.transform)
+        foreach (Transform child in _productionPanelButtonsParent.transform)
         {
             Destroy(child.gameObject);
         }
