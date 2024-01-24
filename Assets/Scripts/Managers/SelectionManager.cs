@@ -4,8 +4,8 @@ using UnityEngine;
 public class SelectionManager : MonoBehaviour
 {
     [SerializeField] private InputManager _inputManager;
-
-    private GameObject _selectedObject;
+    [SerializeField] private PreviewSystem _previewSystem;
+    [SerializeField] private GameObject _selectedObject;
 
     private void Start()
     {
@@ -35,6 +35,8 @@ public class SelectionManager : MonoBehaviour
             return;
         }
         _selectedObject = obj;
+        if (_selectedObject.GetComponent<IMovable>() != null)
+            _previewSystem.StartUnitMovementPreview();
         selectableObject.OnSelect();
     }
 
@@ -43,6 +45,8 @@ public class SelectionManager : MonoBehaviour
         if (_selectedObject == null)
             return;
         _selectedObject.GetComponent<ISelectable>().OnDeselect();
+        _selectedObject = null;
+        _previewSystem.StopShowingPreview();
     }
 
     private void MoveObject()
@@ -50,12 +54,12 @@ public class SelectionManager : MonoBehaviour
         if (_selectedObject == null)
             return;
         Vector3Int targetPosition = _inputManager.GetMouseGridPosition();
-        MoveIfIsMoveable(_selectedObject, targetPosition);
+        MoveIfIsMoveable(targetPosition);
     }
 
-    private void MoveIfIsMoveable(GameObject obj, Vector3Int targetPosition)
+    private void MoveIfIsMoveable(Vector3Int targetPosition)
     {
-        IMovable movableObject = obj.GetComponent<IMovable>();
+        IMovable movableObject = _selectedObject.GetComponent<IMovable>();
         if (movableObject == null)
         {
             Debug.Log("Object is not moveable");

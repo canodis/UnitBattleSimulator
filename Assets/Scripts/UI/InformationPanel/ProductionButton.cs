@@ -17,6 +17,6 @@ public class ProductionButton : MonoBehaviour
 
     private void InitButtonListener()
     {
-        GetComponent<Button>().onClick.AddListener( () => _placementManager.StartPlacement(_id));
+        GetComponent<Button>().onClick.AddListener(() => _placementManager.StartPlacement(_id));
     }
 }

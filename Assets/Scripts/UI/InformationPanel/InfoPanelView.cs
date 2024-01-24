@@ -25,20 +25,25 @@ public class InfoPanelView : MonoBehaviour
         _selectedObjectImage.sprite = objectData.Sprite;
     }
 
-    public void  ShowProductPanel(Unit[] units)
+    public void ShowProductPanel(Unit[] units, Barracks barracks)
     {
         foreach (Transform child in _productionPanelButtonsParent.transform)
         {
             Destroy(child.gameObject);
         }
         _productionPanel.SetActive(true);
-        // foreach (Unit unit in units)
-        // {
-        //     GameObject button = Instantiate(_productionButtonPrefab, _productionPanel.transform);
-        //     button.GetComponentInChildren<TMP_Text>().text = unit.GetObjectData().Name;
-        // //     button.GetComponent<Button>().onClick.AddListener(() =>
-        // //         GameManager.Instance.placementManager.PlaceObjectAutomatically(unit.GetObjectData().Id));
-        // }
+        foreach (Unit unit in units)
+        {
+            ObjectData objectData = GameManager.Instance.FindObjectDataWithIndex(unit.Id);
+            GameObject button = Instantiate(_productionButtonPrefab, _productionPanelButtonsParent.transform);
+            button.GetComponentInChildren<TMP_Text>().text = objectData.Name;
+            button.GetComponent<Image>().sprite = objectData.Sprite;
+            button.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                barracks.SpawnUnit(unit.Id);
+            }
+              );
+        }
 
     }
 

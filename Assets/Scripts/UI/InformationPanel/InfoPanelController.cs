@@ -17,9 +17,9 @@ public class InfoPanelController : MonoBehaviour
         _infoPanelView.ShowInfo(_model);
     }
 
-    public void ShowProductPanel(Unit[] units)
+    public void ShowProductPanel(Unit[] units, Barracks barracks)
     {
-        _infoPanelView.ShowProductPanel(units);
+        _infoPanelView.ShowProductPanel(units, barracks);
     }
 
     public void HideInfoPanel()

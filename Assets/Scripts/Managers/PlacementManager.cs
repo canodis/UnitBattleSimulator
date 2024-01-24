@@ -25,7 +25,7 @@ public class PlacementManager : MonoBehaviour
     {
         StopPlacement();
 
-        _placementState = new DestroyState(_previewSystem, _objectManager);
+        // _placementState = new DestroyState(_previewSystem, _objectManager);
         _inputManager.OnLeftClicked += PlaceObject;
         _inputManager.OnExit += StopPlacement;
     }
@@ -39,11 +39,11 @@ public class PlacementManager : MonoBehaviour
         StopPlacement();
     }
 
-    public void PlaceObjectAutomatically(Vector3Int gridPositionInt, int Id)
+    public void PlaceObjectImmediately(Vector3Int gridPositionInt, int Id)
     {
-        // _placementState = new PlacementState(Id, _previewSystem, _objectManager);
-        // _placementState.OnAction(gridPositionInt);
-        // StopPlacement();
+        _placementState = new PlacementState(Id, _previewSystem, _objectManager);
+        _placementState.OnAction(gridPositionInt);
+        StopPlacement();
     }
 
     private void StopPlacement()

@@ -2,7 +2,6 @@ public class PowerPlant : Building, ISelectable
 {
     private PowerPlant()
     {
-        isProducer = false;
     }
 
     public void OnSelect()

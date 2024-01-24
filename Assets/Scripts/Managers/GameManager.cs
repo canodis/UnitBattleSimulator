@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public ObjectManager objectManager;
     public AllObjectsSO allObjects;
     public TilemapController gridData;
-
+    public InputManager inputManager;
     private void Awake()
     {
         Instance = this;

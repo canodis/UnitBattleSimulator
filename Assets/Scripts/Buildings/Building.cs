@@ -1,14 +1,16 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Building : GridObject
 {
-    protected bool isProducer;
     protected InfoPanelController _infoPanelController;
+    protected List<Vector3Int> _neighbourCells = new();
 
-    private void Start()
+    protected void Start()
     {
         _infoPanelController = GameObject.FindWithTag("InfoPanelController").GetComponent<InfoPanelController>();
+        _neighbourCells = GameManager.Instance.gridData.GetObjectsNeighbourCells(gridPosition, objectData.Size);
     }
 
     protected virtual void ShowInfo()
@@ -22,6 +24,7 @@ public abstract class Building : GridObject
     {
         _infoPanelController.HideInfoPanel();
     }
+
     public void DestroyBuilding()
     {
         // GameManager.Instance.gridData.DestroyObject(gridPosition, objectData.Size);

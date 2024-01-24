@@ -8,19 +8,19 @@ public class PreviewSystem : MonoBehaviour
     [SerializeField] private Sprite _closedThrashCanSprite;
     [SerializeField] private Sprite _openedThrashCanSprite;
 
-    private GameObject _gameObjectPreview;
+    private GameObject _gameObjectPreview = null;
     private SpriteRenderer _cellCursorSpriteRenderer;
-    private int _sortingOrder;
+    private bool isActive = false;
 
     private void Start()
     {
         _cellCursor.SetActive(false);
         _cellCursorSpriteRenderer = _cellCursor.GetComponentInChildren<SpriteRenderer>();
-        _sortingOrder = _cellCursorSpriteRenderer.sortingOrder;
     }
 
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
+        isActive = true;
         _gameObjectPreview = Instantiate(prefab);
         PrepareCursor(size);
         PreparePreview(_gameObjectPreview);
@@ -42,44 +42,41 @@ public class PreviewSystem : MonoBehaviour
         spriteRenderer.color = new Color(1, 1, 1, 0.7f);
     }
 
-    public void UpdatePosition(Vector3 position, bool validity)
+    public void UpdatePreviewPosition(Vector3 position)
     {
         _gameObjectPreview.transform.position = position;
-        _cellCursor.transform.position = position;
-        ApplyFeedback(validity);
-    }
-
-    private void ApplyFeedback(bool validity)
-    {
-        Color color = validity ? Color.green : Color.red;
-        _cellCursorSpriteRenderer.color = color;
     }
 
     public void StopShowingPreview()
     {
-        Destroy(_gameObjectPreview);
+        isActive = false;
+        if (_gameObjectPreview != null)
+        {
+            Destroy(_gameObjectPreview);
+            _gameObjectPreview = null;
+        }
         _cellCursor.SetActive(false);
         _cellCursor.transform.localScale = new Vector3(1, 1, 1);
         _cellCursorSpriteRenderer.color = Color.white;
     }
 
-    public void StartShowingDestroyPreview(Vector3 position)
+    public void ChangeCursorsColor(bool validity)
     {
-        _cellCursorSpriteRenderer.sprite = _closedThrashCanSprite;
-        _cellCursorSpriteRenderer.sortingOrder = 10;
-        _cellCursor.transform.position = position;
+        Color color = validity ? Color.green : Color.red;
+        _cellCursorSpriteRenderer.color = color;
+    }
+
+    public void StartUnitMovementPreview()
+    {
+        isActive = true;
         _cellCursor.SetActive(true);
     }
 
-    public void UpdateDestroyPreview(Vector3 position, bool validity)
+    void Update()
     {
-        _cellCursor.transform.position = position;
-        _cellCursorSpriteRenderer.sprite = validity ? _openedThrashCanSprite : _closedThrashCanSprite;
+        if (!isActive)
+            return ;
+        _cellCursor.transform.position = GameManager.Instance.inputManager.GetMouseGridPosition();
     }
 
-    public void StopShowingDestroyPreview()
-    {
-        _cellCursor.SetActive(false);
-        _cellCursorSpriteRenderer.sortingOrder = _sortingOrder;
-    }
 }

@@ -16,7 +16,7 @@ public class PlacementState : IPlacementState
         if (_selectedObjectIndex > -1)
         {
             ObjectData objectData = GameManager.Instance.FindObjectDataWithIndex(_selectedObjectIndex);
-            _previewSystem.StartShowingPlacementPreview(objectData.Prefab, objectData.Size);
+            _previewSystem.StartShowingPlacementPreview(objectData.PreviewPrefab, objectData.Size);
         }
         else
         {
@@ -42,8 +42,8 @@ public class PlacementState : IPlacementState
     {
         bool canPlace = GameManager.Instance.gridData.CanPlaceObject(gridPosition,
             GameManager.Instance.allObjects.objectsData[_selectedObjectIndex].Size);
-
-        _previewSystem.UpdatePosition(gridPosition, canPlace);
+        _previewSystem.ChangeCursorsColor(canPlace);
+        _previewSystem.UpdatePreviewPosition(gridPosition);
     }
 
 }

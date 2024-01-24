@@ -159,4 +159,26 @@ public class TilemapController : MonoBehaviour
         }
     }
 
+    public List<Vector3Int> GetObjectsNeighbourCells(Vector3Int cellPosition, Vector2Int size)
+    {
+        List<Vector3Int> neighbourCells = new List<Vector3Int>();
+        Debug.Log("Cell position: " + cellPosition);
+        for (int y = cellPosition.y - 1; y < cellPosition.y + size.y + 1; y++)
+        {
+            for (int x = cellPosition.x - 1; x < cellPosition.x + size.x + 1; x++)
+            {
+                if (y == cellPosition.y - 1 || y == cellPosition.y + size.y || x == cellPosition.x - 1 || x == cellPosition.x + size.x)
+                {
+                    Vector3Int cell = new Vector3Int(x, y, 0);
+                    if (tileMapData.ContainsKey(cell))
+                    {
+                        Debug.Log("Neighbour cell: " + cell);
+                        neighbourCells.Add(new Vector3Int(x, y, 0));
+                    }
+                }
+            }
+        }
+        return neighbourCells;
+    }
+
 }
