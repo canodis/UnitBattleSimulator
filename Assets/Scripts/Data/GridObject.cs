@@ -37,4 +37,20 @@ public class GridObject : MonoBehaviour
                 gameObject.GetComponent<IAttackable>().DestroySelf();
         }
     }
+
+    public Vector2Int GetSize()
+    {
+        return objectData.Size;
+    }
+
+    public int GetIndex()
+    {
+        return index;
+    }
+
+    public Vector3Int GetGridPosition()
+    {
+        return gridPosition;
+    }
+
 }

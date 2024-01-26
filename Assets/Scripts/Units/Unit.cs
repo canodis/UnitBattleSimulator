@@ -60,4 +60,9 @@ public abstract class Unit : GridObject, IMovable, ISelectable, IAttackable
     {
         _animator.Play(animationName);
     }
+
+    public float GetSpeed()
+    {
+        return speed;
+    }
 }

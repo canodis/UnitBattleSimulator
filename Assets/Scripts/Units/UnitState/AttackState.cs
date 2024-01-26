@@ -10,7 +10,7 @@ public class AttackState : IUnitState
     private GameObject _targetGameObject;
     private Vector3 _targetPositionVector3;
     private float _counter;
-    
+
 
     public AttackState(Vector3Int targetPosition, Unit unit, UnitStateManager stateManager, GameObject attackableTarget)
     {
@@ -37,7 +37,7 @@ public class AttackState : IUnitState
             _counter = 0;
         }
         else
-        {   
+        {
             _unit.PlayAnimation("Idle");
             _stateManager.SetUnitState(null);
         }
@@ -46,5 +46,9 @@ public class AttackState : IUnitState
     private bool IsTargetMoved()
     {
         return _targetGameObject != null && _targetPositionVector3 == _targetGameObject.transform.position;
+    }
+
+    public void OnExit()
+    {
     }
 }

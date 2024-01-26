@@ -51,19 +51,19 @@ public class TilemapController : MonoBehaviour
         PlacementData oldPlacementData = tileMapData[oldPosition];
         PlacementData newPlacementData = tileMapData[newPosition];
         if (oldPlacementData == null || newPlacementData != null)
+        {
+            Debug.Log($"Can't swap {oldPosition} to {newPosition}");
             return;
+        }
         oldPlacementData.CellPosition = newPosition;
         tileMapData[oldPosition] = null;
         tileMapData[newPosition] = oldPlacementData;
+        Debug.Log($"Swapped {oldPosition} to {newPosition}");
     }
 
-    public void AddUnitToCells(Vector3Int unitPosition, Vector3Int addPosition)
+    public void RemoveUnitFromCells(Vector3Int unitPosition)
     {
-        PlacementData placementData = tileMapData[unitPosition];
-        if (placementData == null)
-            return;
-        placementData.CellPosition = addPosition;
-        tileMapData[addPosition] = placementData;
+        tileMapData[unitPosition] = null;
     }
 
     private List<Vector2Int> GetRentedCells(Vector3Int cellPosition, Vector2Int size)
