@@ -62,14 +62,4 @@ public class MovementState : IUnitState
             }
         }
     }
-
-    public void OnExit()
-    {
-        // if (_unit.GetGridPosition() != _newPosition)
-        // {
-        //     Debug.Log("unit position not equal to new position");
-        //     _unit.SetGridPosition(_newPosition);
-        // }
-    }
 }
-

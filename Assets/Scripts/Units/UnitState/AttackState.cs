@@ -47,8 +47,4 @@ public class AttackState : IUnitState
     {
         return _targetGameObject != null && _targetPositionVector3 == _targetGameObject.transform.position;
     }
-
-    public void OnExit()
-    {
-    }
 }
