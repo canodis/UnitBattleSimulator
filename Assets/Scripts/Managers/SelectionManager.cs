@@ -5,7 +5,7 @@ public class SelectionManager : MonoBehaviour
 {
     [SerializeField] private InputManager _inputManager;
     [SerializeField] private PreviewSystem _previewSystem;
-    [SerializeField] private GameObject _selectedObject;
+    private GameObject _selectedObject;
 
     private void Start()
     {

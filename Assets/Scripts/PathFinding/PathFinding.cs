@@ -141,6 +141,8 @@ public class PathFinding
         float minDistance = float.MaxValue;
         foreach (Vector3Int neighbourCell in neighbourCells)
         {
+            if (neighbourCell == startPosition)
+                return neighbourCell;
             if (GameManager.Instance.gridData.IsCellEmpty(neighbourCell))
             {
                 float distance = Vector3Int.Distance(startPosition, neighbourCell);

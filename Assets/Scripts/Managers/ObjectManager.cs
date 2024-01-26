@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
+    [SerializeField] private GameObject _objectPrefab;
     [SerializeField] private List<GridObject> _instatiatedObjects = new();
 
     public int InstantiateObject(ObjectData objectData, Vector3Int gridPosition)
     {
         GridObject newObject = Instantiate(objectData.Prefab, gridPosition,
-            Quaternion.identity).GetComponent<GridObject>();
+            Quaternion.identity, _objectPrefab.transform).GetComponent<GridObject>();
         _instatiatedObjects.Add(newObject);
         int index = _instatiatedObjects.Count - 1;
         newObject.Init(objectData, gridPosition, index);

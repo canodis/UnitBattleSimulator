@@ -22,6 +22,7 @@ public abstract class Unit : GridObject, IMovable, ISelectable, IAttackable
         GridObject target = GameManager.Instance.objectManager.GetGridObjectWithPosition(targetPosition);
         if (target != null)
         {
+            RotateToMoveDirection(gridPosition, targetPosition);
             _animator.Play("Attack");
             target.TakeDamage(attackDamage);
             return true;

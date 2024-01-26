@@ -5,8 +5,6 @@ public class PreviewSystem : MonoBehaviour
 {
     [SerializeField] private GameObject _cellCursor;
     [SerializeField] private Sprite _cursorSprite;
-    [SerializeField] private Sprite _closedThrashCanSprite;
-    [SerializeField] private Sprite _openedThrashCanSprite;
 
     private GameObject _gameObjectPreview = null;
     private SpriteRenderer _cellCursorSpriteRenderer;

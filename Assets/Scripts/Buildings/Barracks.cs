@@ -45,6 +45,4 @@ public class Barracks : Building, ISelectable, IMovable
     {
         _spawnLocationPreview.Move(targetPosition);
     }
-
-
 }
