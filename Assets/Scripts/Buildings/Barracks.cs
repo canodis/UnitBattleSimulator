@@ -4,13 +4,13 @@ using UnityEngine;
 public class Barracks : Building, ISelectable, IMovable
 {
     [SerializeField] private Unit[] units;
-    private SpawnLocationController _spawnLocationPreview;
+    [SerializeField] private SpawnLocationController _spawnLocationPreview;
 
     new void Start()
     {
         base.Start();
         _spawnLocationPreview = GetComponentInChildren<SpawnLocationController>();
-        _spawnLocationPreview.SetNeighbourCells(_neighbourCells);
+        _spawnLocationPreview.SetNeighbourCells(GameManager.Instance.gridData.GetObjectsNeighbourCells(gridPosition, objectData.Size));
         _spawnLocationPreview.gameObject.SetActive(false);
     }
 
@@ -45,4 +45,6 @@ public class Barracks : Building, ISelectable, IMovable
     {
         _spawnLocationPreview.Move(targetPosition);
     }
+
+
 }

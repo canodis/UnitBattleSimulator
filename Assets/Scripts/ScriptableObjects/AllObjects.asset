@@ -27,10 +27,24 @@ MonoBehaviour:
     <PreviewPrefab>k__BackingField: {fileID: 3742374524335481148, guid: 9d588a1b708160148a9bd5d3390bb726, type: 3}
     <Sprite>k__BackingField: {fileID: 21300000, guid: 3cc88ee0a32d28f4f930543991165444, type: 3}
     <MaxHealth>k__BackingField: 50
-  - <Name>k__BackingField: Solider1
+  - <Name>k__BackingField: Dark Soldier
     <Id>k__BackingField: 2
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 5957784490717817517, guid: cc0fb1cb2a9baa840b23e6db714daf3f, type: 3}
-    <PreviewPrefab>k__BackingField: {fileID: 5957784490717817517, guid: cc0fb1cb2a9baa840b23e6db714daf3f, type: 3}
-    <Sprite>k__BackingField: {fileID: 1503628492, guid: 2a106c76c0dd1194f982c563c87a664c, type: 3}
-    <MaxHealth>k__BackingField: 50
+    <PreviewPrefab>k__BackingField: {fileID: 5957784490717817517, guid: 1f09fcef064f4b54e9ed8834d565e756, type: 3}
+    <Sprite>k__BackingField: {fileID: 1830261294, guid: 2a106c76c0dd1194f982c563c87a664c, type: 3}
+    <MaxHealth>k__BackingField: 10
+  - <Name>k__BackingField: Dark Samurai
+    <Id>k__BackingField: 3
+    <Size>k__BackingField: {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 8258495397289243846, guid: a413ba35c1cb5ea409e9b287f6093d43, type: 3}
+    <PreviewPrefab>k__BackingField: {fileID: 8258495397289243846, guid: 3d031769bfc37ea469242c148f6b04e1, type: 3}
+    <Sprite>k__BackingField: {fileID: -2035014674, guid: 222b00b9b3e27b34796075c586975ae7, type: 3}
+    <MaxHealth>k__BackingField: 10
+  - <Name>k__BackingField: Fire Golem
+    <Id>k__BackingField: 4
+    <Size>k__BackingField: {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 6921500088198775129, guid: b8c1aa475afce3745bb63e9c2317bf85, type: 3}
+    <PreviewPrefab>k__BackingField: {fileID: 6921500088198775129, guid: 2544c564ca3cb2843a58b5401deae57f, type: 3}
+    <Sprite>k__BackingField: {fileID: -1781858084, guid: 850c2c96e6d70ec48bcbac6ec3a56cb5, type: 3}
+    <MaxHealth>k__BackingField: 10

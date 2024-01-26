@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         return allObjects.objectsData.FindIndex(index => index.Id == Id);
     }
 
-    public ObjectData FindObjectDataWithIndex(int Id)
+    public ObjectData FindObjectDataWithId(int Id)
     {
         return allObjects.objectsData.Find(index => index.Id == Id);
     }

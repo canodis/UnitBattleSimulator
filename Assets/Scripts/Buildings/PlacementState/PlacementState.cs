@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlacementState : IPlacementState
 {
-    private int _selectedObjectIndex = -1;
+    private int _selectedObjectId = -1;
     private PreviewSystem _previewSystem;
     private ObjectManager _objectManager;
 
@@ -12,10 +12,10 @@ public class PlacementState : IPlacementState
         this._previewSystem = previewSystem;
         this._objectManager = objectManager;
         UIManager.Instance.HideBuildingsMenu();
-        _selectedObjectIndex = GameManager.Instance.FindObjectIndexWithId(Id);
-        if (_selectedObjectIndex > -1)
+        _selectedObjectId = GameManager.Instance.FindObjectIndexWithId(Id);
+        if (_selectedObjectId > -1)
         {
-            ObjectData objectData = GameManager.Instance.FindObjectDataWithIndex(_selectedObjectIndex);
+            ObjectData objectData = GameManager.Instance.FindObjectDataWithId(_selectedObjectId);
             _previewSystem.StartShowingPlacementPreview(objectData.PreviewPrefab, objectData.Size);
         }
         else
@@ -31,17 +31,17 @@ public class PlacementState : IPlacementState
 
     public void OnAction(Vector3Int gridPosition)
     {
-        ObjectData objectData = GameManager.Instance.FindObjectDataWithIndex(_selectedObjectIndex);
+        ObjectData objectData = GameManager.Instance.FindObjectDataWithId(_selectedObjectId);
         if (GameManager.Instance.gridData.CanPlaceObject(gridPosition, objectData.Size) == false)
             return;
         int index = _objectManager.InstantiateObject(objectData, gridPosition);
-        GameManager.Instance.gridData.PlaceObjectToCells(gridPosition, objectData.Size, index);
+        GameManager.Instance.gridData.PlaceObjectToCells(gridPosition, objectData.Size, index, _selectedObjectId);
     }
 
     public void UpdateState(Vector3Int gridPosition)
     {
         bool canPlace = GameManager.Instance.gridData.CanPlaceObject(gridPosition,
-            GameManager.Instance.allObjects.objectsData[_selectedObjectIndex].Size);
+            GameManager.Instance.allObjects.objectsData[_selectedObjectId].Size);
         _previewSystem.ChangeCursorsColor(canPlace);
         _previewSystem.UpdatePreviewPosition(gridPosition);
     }

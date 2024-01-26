@@ -21,15 +21,6 @@ public class PlacementManager : MonoBehaviour
         _inputManager.OnExit += StopPlacement;
     }
 
-    public void StartDestroying()
-    {
-        StopPlacement();
-
-        // _placementState = new DestroyState(_previewSystem, _objectManager);
-        _inputManager.OnLeftClicked += PlaceObject;
-        _inputManager.OnExit += StopPlacement;
-    }
-
     private void PlaceObject()
     {
         if (_inputManager.IsMouseOverUI())

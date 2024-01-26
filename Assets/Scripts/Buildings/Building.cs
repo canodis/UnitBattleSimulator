@@ -2,15 +2,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class Building : GridObject
+public abstract class Building : GridObject, IAttackable
 {
     protected InfoPanelController _infoPanelController;
-    protected List<Vector3Int> _neighbourCells = new();
 
     protected void Start()
     {
         _infoPanelController = GameObject.FindWithTag("InfoPanelController").GetComponent<InfoPanelController>();
-        _neighbourCells = GameManager.Instance.gridData.GetObjectsNeighbourCells(gridPosition, objectData.Size);
     }
 
     protected virtual void ShowInfo()
@@ -25,9 +23,10 @@ public abstract class Building : GridObject
         _infoPanelController.HideInfoPanel();
     }
 
-    public void DestroyBuilding()
+    public void DestroySelf()
     {
-        // GameManager.Instance.gridData.DestroyObject(gridPosition, objectData.Size);
-        // GameManager.Instance.objectManager.DestroyObject(gridPosition);
+        GameManager.Instance.gridData.DestroyObject(gridPosition, objectData.Size);
+        GameManager.Instance.objectManager.DestroyObject(index);
+        _infoPanelController.HideInfoPanel();
     }
 }

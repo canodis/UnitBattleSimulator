@@ -18,7 +18,17 @@ public class ObjectManager : MonoBehaviour
     public void DestroyObject(int index)
     {
         Destroy(_instatiatedObjects[index].gameObject);
-        _instatiatedObjects.RemoveAt(index);
+        _instatiatedObjects[index] = null;
+    }
+
+    public GridObject GetGridObjectWithPosition(Vector3Int position)
+    {
+        int index = GameManager.Instance.gridData.GetObjectIndex(position);
+        if (index != -1)
+        {
+            return _instatiatedObjects[index];
+        }
+        return null;
     }
 
     public GameObject GetObject(int index)
