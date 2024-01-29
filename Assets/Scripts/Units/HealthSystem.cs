@@ -1,12 +1,11 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class HealthSystem
 {
+    private Transform _healthBarTransform;
+
     private float _health;
     private float _maxHealth;
-    private Transform _healthBarTransform;
 
     public HealthSystem(float health, Transform healthBarTransform)
     {

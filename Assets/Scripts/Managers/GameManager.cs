@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Manages essential game systems and provides centralized access to various managers.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -9,6 +12,7 @@ public class GameManager : MonoBehaviour
     public AllObjectsSO allObjects;
     public TilemapController gridData;
     public InputManager inputManager;
+
     private void Awake()
     {
         Instance = this;

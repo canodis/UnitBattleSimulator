@@ -1,6 +1,8 @@
-using System;
 using UnityEngine;
 
+/// <summary>
+/// Preview system for showing placement preview and cursor
+/// </summary>
 public class PreviewSystem : MonoBehaviour
 {
     [SerializeField] private GameObject _cellCursor;
@@ -8,6 +10,7 @@ public class PreviewSystem : MonoBehaviour
 
     private GameObject _gameObjectPreview = null;
     private SpriteRenderer _cellCursorSpriteRenderer;
+
     private bool isActive = false;
 
     private void Start()

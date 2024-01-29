@@ -1,9 +1,17 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class responsible for pathfinding and target cell checking.
+/// </summary>
 public class PathFinding
 {
+    /// <summary>
+    /// Finds a path from the given start position to the end position using A* algorithm.
+    /// </summary>
+    /// <param name="startPosition">The starting position for the pathfinding.</param>
+    /// <param name="endPosition">The target position for the pathfinding.</param>
+    /// <returns>A list of nodes representing the path from start to end, or null if no path is found.</returns>
     public List<Node> FindPath(Vector3Int startPosition, Vector3Int endPosition)
     {
         Node startNode, targetNode, currentNode;
@@ -54,6 +62,12 @@ public class PathFinding
         return null;
     }
 
+    /// <summary>
+    /// Checks the target cell and updates the end position if needed.
+    /// </summary>
+    /// <param name="startPosition">The starting position for the check.</param>
+    /// <param name="endPosition">The target position to be checked and potentially updated.</param>
+    /// <returns>The target GameObject if it's attackable, otherwise, null.</returns>
     public GameObject CheckTargetCell(Vector3Int startPosition, ref Vector3Int endPosition)
     {
         GameObject targetObject = null;
@@ -77,6 +91,12 @@ public class PathFinding
         return targetObject;
     }
 
+    /// <summary>
+    /// Calculates the distance between two nodes for A* algorithm.
+    /// </summary>
+    /// <param name="currentNode">The current node.</param>
+    /// <param name="neighbour">The neighbouring node.</param>
+    /// <returns>The distance between the nodes.</returns>
     private int GetDistance(Node currentNode, Node neighbour)
     {
         int distx, disty;
@@ -87,6 +107,11 @@ public class PathFinding
         return distx > disty ? (14 * disty + 10 * (distx - disty)) : (14 * distx + 10 * (disty - distx));
     }
 
+    /// <summary>
+    /// Retrieves neighbouring nodes for the given node.
+    /// </summary>
+    /// <param name="currentNode">The current node.</param>
+    /// <returns>A list of neighbouring nodes.</returns>
     private List<Node> GetNeighbours(Node currentNode)
     {
         List<Node> neighbours = new();
@@ -107,6 +132,12 @@ public class PathFinding
         return neighbours;
     }
 
+    /// <summary>
+    /// Retraces the path from the end node to the start node.
+    /// </summary>
+    /// <param name="startNode">The starting node of the path.</param>
+    /// <param name="endNode">The end node of the path.</param>
+    /// <returns>A list of nodes representing the retrace path.</returns>
     List<Node> RetracePath(Node startNode, Node endNode)
     {
         List<Node> path;
@@ -124,6 +155,12 @@ public class PathFinding
         return path;
     }
 
+    /// <summary>
+    /// Finds the closest available neighbour cell to the target position.
+    /// </summary>
+    /// <param name="startPosition">The starting position for the search.</param>
+    /// <param name="targetPosition">The target position for which the closest neighbour is sought.</param>
+    /// <returns>The closest available neighbour cell.</returns>
     private Vector3Int GetClosestNeighbourCell(Vector3Int startPosition, Vector3Int targetPosition)
     {
         PlacementData placementData = GameManager.Instance.gridData.GetObjectPlacementData(targetPosition);
@@ -131,7 +168,7 @@ public class PathFinding
         {
             return targetPosition;
         }
-        ObjectData objectData = GameManager.Instance.FindObjectDataWithId(placementData.Id);
+        ObjectData objectData = GameManager.Instance.FindObjectDataWithId(placementData.id);
         if (objectData == null)
         {
             return targetPosition;

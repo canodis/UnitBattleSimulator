@@ -135,7 +135,7 @@ MonoBehaviour:
   <Id>k__BackingField: 3
   attackDamage: 5
   attackSpeed: 1
-  speed: 1
+  speed: 5
 --- !u!95 &2320018614403489974
 Animator:
   serializedVersion: 5

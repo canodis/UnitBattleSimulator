@@ -2,11 +2,15 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Manages mouse input events and provides mouse position information.
+/// </summary>
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private Grid _grid;
+
     public event Action OnRightClicked;
     public event Action OnLeftClicked;
     public event Action OnExit;
@@ -32,6 +36,9 @@ public class InputManager : MonoBehaviour
             OnMiddleClicked?.Invoke();
     }
 
+    /// <summary>
+    /// Checks if the mouse is currently over a UI element.
+    /// </summary>
     public bool IsMouseOverUI() => EventSystem.current.IsPointerOverGameObject();
 
     public Vector2 GetMousePosition()

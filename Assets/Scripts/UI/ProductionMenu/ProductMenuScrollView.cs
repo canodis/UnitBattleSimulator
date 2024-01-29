@@ -1,12 +1,7 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
 public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHandler
 {
@@ -22,10 +17,14 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
     [SerializeField] private int _lineCount;
 
     private Vector2 _lastDragPosition;
-    [SerializeField] private bool _positiveDrag = true;
+    private bool _positiveDrag = true;
     private int _childCount = 0;
     private float _height = 0.0f;
 
+    /// <summary>
+    /// In order for the algorithm to work, it needs to be scrolled manually, so scrolling is done with coroutine.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Start()
     {
         CreateItems();
@@ -52,7 +51,6 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
     void OnDisable()
     {
         _scrollRect.onValueChanged.RemoveListener(HandleScroll);
-
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -67,6 +65,11 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
 
     }
 
+    /// <summary>
+    /// Determines if the given Transform item is out of bounds vertically.
+    /// </summary>
+    /// <param name="item">The Transform item to check.</param>
+    /// <returns>True if out of bounds, false otherwise.</returns>
     private bool ReachedThreshold(Transform item)
     {
         float positiveYThreshold = _transform.position.y + _height * 0.5f + _outOfBoundsThreashold;
@@ -75,19 +78,26 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
             : item.position.y + _childHeight * 0.5f < negativeYThreshold;
     }
 
+    /// <summary>
+    /// Handles the scrolling behavior based on the provided scroll value.
+    /// </summary>
+    /// <param name="value">The scroll value to determine the scrolling direction.</param>
     private void HandleScroll(Vector2 value)
     {
+        // Determine the index of the current item and get its Transform.
         int currentItemIndex = _positiveDrag ? _childCount - 1 : 0;
-        var currentItem = _scrollRect.content.GetChild(currentItemIndex);
+        Transform currentItem = _scrollRect.content.GetChild(currentItemIndex);
 
         if (!ReachedThreshold(currentItem))
         {
             return;
         }
+        // Gets the transform of the last item according to the scroll direction (index 0 if scrolling down, _childcount - 1 if scrolling up)
         int endItemIndex = _positiveDrag ? 0 : _childCount - 1;
         Transform endItem = _scrollRect.content.GetChild(endItemIndex);
         Vector2 newPosition = endItem.position;
 
+        // Calculate the new position for the current item based on the end item's position, height, and spacing.
         if (_positiveDrag)
         {
             newPosition.y = endItem.position.y - _childHeight * 1.5f - _spacing;
@@ -96,7 +106,7 @@ public class ProductMenuScrollView : MonoBehaviour, IBeginDragHandler, IDragHand
         {
             newPosition.y = endItem.position.y + _childHeight * 1.5f + _spacing;
         }
-
+        // Set the new position for the current item and update its sibling index.
         currentItem.position = newPosition;
         currentItem.SetSiblingIndex(endItemIndex);
     }

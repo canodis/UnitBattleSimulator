@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _buildingsMenu;
     static public UIManager Instance { get; private set; }
+    [SerializeField] private GameObject _buildingsMenu;
 
     private void Awake()
     {

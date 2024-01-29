@@ -1,6 +1,8 @@
-using System;
 using UnityEngine;
 
+/// <summary>
+/// Manages object selection and movement based on user input.
+/// </summary>
 public class SelectionManager : MonoBehaviour
 {
     [SerializeField] private InputManager _inputManager;
@@ -13,6 +15,9 @@ public class SelectionManager : MonoBehaviour
         _inputManager.OnRightClicked += MoveObject;
     }
 
+    /// <summary>
+    /// Handles the selection of an object when the left mouse button is clicked.
+    /// </summary>
     private void SelectObject()
     {
         DeselectObject();
@@ -26,6 +31,9 @@ public class SelectionManager : MonoBehaviour
         SelectIfIsSelectable(obj);
     }
 
+    /// <summary>
+    /// Checks if the object is selectable and performs the selection if possible.
+    /// </summary>
     private void SelectIfIsSelectable(GameObject obj)
     {
         ISelectable selectableObject = obj.GetComponent<ISelectable>();
@@ -40,6 +48,9 @@ public class SelectionManager : MonoBehaviour
         selectableObject.OnSelect();
     }
 
+    /// <summary>
+    /// Deselects the currently selected object.
+    /// </summary>
     private void DeselectObject()
     {
         if (_selectedObject == null)
@@ -49,6 +60,9 @@ public class SelectionManager : MonoBehaviour
         _previewSystem.StopShowingPreview();
     }
 
+    /// <summary>
+    /// Handles the movement of the selected object when the right mouse button is clicked.
+    /// </summary>
     private void MoveObject()
     {
         if (_selectedObject == null)
@@ -57,6 +71,9 @@ public class SelectionManager : MonoBehaviour
         MoveIfIsMoveable(targetPosition);
     }
 
+    /// <summary>
+    /// Checks if the selected object is movable and performs the movement if possible.
+    /// </summary>
     private void MoveIfIsMoveable(Vector3Int targetPosition)
     {
         IMovable movableObject = _selectedObject.GetComponent<IMovable>();

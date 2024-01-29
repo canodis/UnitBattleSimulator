@@ -19,7 +19,7 @@ public class InfoPanelView : MonoBehaviour
         _productionPanel.SetActive(false);
         buttonsPool = new ObjectPool<GameObject>(() =>
             Instantiate(_productionButtonPrefab, _productionPanelButtonsParent.transform),
-            (button) => {button.SetActive(true);},
+            (button) => { button.SetActive(true); },
             (button) => button.SetActive(false),
             10);
     }
@@ -32,6 +32,11 @@ public class InfoPanelView : MonoBehaviour
         _selectedObjectImage.sprite = objectData.Sprite;
     }
 
+    /// <summary>
+    /// Displays the product panel with buttons for each specified unit, allowing selection and unit spawning.
+    /// </summary>
+    /// <param name="units">Array of units to display in the panel.</param>
+    /// <param name="barracks">The barracks associated with the product panel.</param>
     public void ShowProductPanel(Unit[] units, Barracks barracks)
     {
         foreach (Transform child in _productionPanelButtonsParent.transform)

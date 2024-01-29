@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Manages the tilemap and handles object placement.
+/// </summary>
 public class TilemapController : MonoBehaviour
 {
     [SerializeField] private Tilemap _floorTilemap;
-    [SerializeField] private int _neighborThreshold;
+    private Dictionary<Vector3Int, PlacementData> _tileMapData = new();
 
-    private Dictionary<Vector3Int, PlacementData> tileMapData = new();
+    [SerializeField] private int _neighborThreshold;
 
     void Start()
     {
@@ -16,6 +19,9 @@ public class TilemapController : MonoBehaviour
         AdjustTilemapAccessibility(_neighborThreshold);
     }
 
+    /// <summary>
+    /// Checks if an object can be placed on the specified cells within the tilemap.
+    /// </summary>
     public bool CanPlaceObject(Vector3Int cellPosition, Vector2Int size)
     {
         for (int y = cellPosition.y; y < cellPosition.y + size.y; y++)
@@ -32,6 +38,9 @@ public class TilemapController : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Places an object on the specified cells within the tilemap.
+    /// </summary>
     public void PlaceObjectToCells(Vector3Int cellPosition, Vector2Int size, int index, int id)
     {
         List<Vector2Int> rentedCells = GetRentedCells(cellPosition, size);
@@ -41,31 +50,14 @@ public class TilemapController : MonoBehaviour
             for (int x = cellPosition.x; x < cellPosition.x + size.x; x++)
             {
                 Vector3Int cell = new Vector3Int(x, y);
-                tileMapData[cell] = placementData;
+                _tileMapData[cell] = placementData;
             }
         }
     }
 
-    public void SwapUnitToCells(Vector3Int oldPosition, Vector3Int newPosition)
-    {
-        PlacementData oldPlacementData = tileMapData[oldPosition];
-        PlacementData newPlacementData = tileMapData[newPosition];
-        if (oldPlacementData == null || newPlacementData != null)
-        {
-            Debug.Log($"Can't swap {oldPosition} to {newPosition}");
-            return;
-        }
-        oldPlacementData.CellPosition = newPosition;
-        tileMapData[oldPosition] = null;
-        tileMapData[newPosition] = oldPlacementData;
-        Debug.Log($"Swapped {oldPosition} to {newPosition}");
-    }
-
-    public void RemoveUnitFromCells(Vector3Int unitPosition)
-    {
-        tileMapData[unitPosition] = null;
-    }
-
+    /// <summary>
+    /// Returns a list of cells that are rented by the object.
+    /// </summary>
     private List<Vector2Int> GetRentedCells(Vector3Int cellPosition, Vector2Int size)
     {
         List<Vector2Int> rentedCells = new List<Vector2Int>();
@@ -80,11 +72,12 @@ public class TilemapController : MonoBehaviour
         return rentedCells;
     }
 
+    /// <summary> Checks whether the cell is empty.  </summary>
     public bool IsCellEmpty(Vector3Int cellPosition)
     {
-        if (tileMapData.ContainsKey(cellPosition))
+        if (_tileMapData.ContainsKey(cellPosition))
         {
-            return tileMapData[cellPosition] == null;
+            return _tileMapData[cellPosition] == null;
         }
         else
         {
@@ -92,6 +85,9 @@ public class TilemapController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes the tilemap data dictionary with all floor tiles.
+    /// </summary>
     private void InitTileMapData()
     {
         for (int y = _floorTilemap.cellBounds.yMin; y < _floorTilemap.cellBounds.yMax; y++)
@@ -101,7 +97,7 @@ public class TilemapController : MonoBehaviour
                 Vector3Int cellPosition = new Vector3Int(x, y, 0);
                 if (_floorTilemap.HasTile(cellPosition))
                 {
-                    tileMapData.Add(cellPosition, null);
+                    _tileMapData.Add(cellPosition, null);
                 }
             }
         }
@@ -114,9 +110,9 @@ public class TilemapController : MonoBehaviour
     private void AdjustTilemapAccessibility(int neighborThreshold)
     {
         BoundsInt bounds = _floorTilemap.cellBounds;
-        Dictionary<Vector3Int, PlacementData> updatedTileMapData = new(tileMapData);
+        Dictionary<Vector3Int, PlacementData> updatedTileMapData = new(_tileMapData);
 
-        foreach (var cell in tileMapData.Keys)
+        foreach (var cell in _tileMapData.Keys)
         {
             int neighborCount = CountTrueNeighbors(cell, bounds);
             if (neighborCount < neighborThreshold)
@@ -125,7 +121,7 @@ public class TilemapController : MonoBehaviour
             }
         }
 
-        tileMapData = updatedTileMapData;
+        _tileMapData = updatedTileMapData;
     }
 
     /// <summary>
@@ -145,7 +141,7 @@ public class TilemapController : MonoBehaviour
                 if (x == 0 && y == 0) continue;
 
                 Vector3Int neighborPosition = new Vector3Int(cell.x + x, cell.y + y, cell.z);
-                if (bounds.Contains(neighborPosition) && tileMapData.TryGetValue(neighborPosition, out PlacementData isAvailable)
+                if (bounds.Contains(neighborPosition) && _tileMapData.TryGetValue(neighborPosition, out PlacementData isAvailable)
                     && isAvailable == null)
                 {
                     count++;
@@ -155,6 +151,9 @@ public class TilemapController : MonoBehaviour
         return count;
     }
 
+    /// <summary>
+    /// Destroys the object at the specified cell position.
+    /// </summary>
     public void DestroyObject(Vector3Int cellPosition, Vector2Int size)
     {
         for (int y = cellPosition.y; y < cellPosition.y + size.y; y++)
@@ -162,16 +161,16 @@ public class TilemapController : MonoBehaviour
             for (int x = cellPosition.x; x < cellPosition.x + size.x; x++)
             {
                 Vector3Int cell = new Vector3Int(x, y, 0);
-                tileMapData[cell] = null;
+                _tileMapData[cell] = null;
             }
         }
     }
 
     public int GetObjectIndex(Vector3Int cellPosition)
     {
-        if (tileMapData.ContainsKey(cellPosition) && tileMapData[cellPosition] != null)
+        if (_tileMapData.ContainsKey(cellPosition) && _tileMapData[cellPosition] != null)
         {
-            return tileMapData[cellPosition].Index;
+            return _tileMapData[cellPosition].index;
         }
         else
         {
@@ -181,9 +180,9 @@ public class TilemapController : MonoBehaviour
 
     public PlacementData GetObjectPlacementData(Vector3Int cellPosition)
     {
-        if (tileMapData.ContainsKey(cellPosition) && tileMapData[cellPosition] != null)
+        if (_tileMapData.ContainsKey(cellPosition) && _tileMapData[cellPosition] != null)
         {
-            return tileMapData[cellPosition];
+            return _tileMapData[cellPosition];
         }
         else
         {
@@ -191,6 +190,9 @@ public class TilemapController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the cells neighboring the specified cell within the tilemap.
+    /// </summary>
     public List<Vector3Int> GetObjectsNeighbourCells(Vector3Int cellPosition, Vector2Int size)
     {
         List<Vector3Int> neighbourCells = new List<Vector3Int>();
@@ -202,7 +204,7 @@ public class TilemapController : MonoBehaviour
                     x == cellPosition.x - 1 || x == cellPosition.x + size.x)
                 {
                     Vector3Int cell = new Vector3Int(x, y, 0);
-                    if (tileMapData.ContainsKey(cell))
+                    if (_tileMapData.ContainsKey(cell))
                     {
                         neighbourCells.Add(new Vector3Int(x, y, 0));
                     }

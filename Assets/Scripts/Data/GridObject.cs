@@ -30,11 +30,14 @@ public class GridObject : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (gameObject.GetComponent<IAttackable>() == null)
+        {
+            return;
+        }
         healthSystem.TakeDamage(damage);
         if (healthSystem.GetHealth() <= 0)
         {
-            if (gameObject.GetComponent<IAttackable>() != null)
-                gameObject.GetComponent<IAttackable>().DestroySelf();
+            gameObject.GetComponent<IAttackable>().DestroySelf();
         }
     }
 

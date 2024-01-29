@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Barracks : Building, ISelectable, IMovable
@@ -31,7 +30,7 @@ public class Barracks : Building, ISelectable, IMovable
     protected override void ShowInfo()
     {
         base.ShowInfo();
-        _infoPanelController.ShowProductPanel(units, this);
+        infoPanelController.ShowProductPanel(units, this);
     }
 
     public void SpawnUnit(int Id)

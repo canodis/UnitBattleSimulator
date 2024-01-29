@@ -1,10 +1,13 @@
 using UnityEngine;
 
+/// <summary>
+/// Base abstract class for all units.
+/// </summary>
 public abstract class Unit : GridObject, IMovable, ISelectable, IAttackable
 {
     [field: SerializeField] public int Id { get; set; }
     [field: SerializeField] protected float attackDamage;
-    [field: SerializeField] public float attackSpeed;
+    [field: SerializeField] protected float attackSpeed;
     [field: SerializeField] protected float speed;
 
     private UnitStateManager _stateManager = new();
@@ -22,7 +25,7 @@ public abstract class Unit : GridObject, IMovable, ISelectable, IAttackable
         GridObject target = GameManager.Instance.objectManager.GetGridObjectWithPosition(targetPosition);
         if (target != null)
         {
-            RotateToMoveDirection(gridPosition, targetPosition);
+            RotateToDirection(gridPosition, targetPosition);
             _animator.Play("Attack");
             target.TakeDamage(attackDamage);
             return true;
@@ -30,16 +33,10 @@ public abstract class Unit : GridObject, IMovable, ISelectable, IAttackable
         return false;
     }
 
-    public void DestroySelf()
-    {
-        GameManager.Instance.gridData.DestroyObject(gridPosition, objectData.Size);
-        GameManager.Instance.objectManager.DestroyObject(index);
-    }
-
 
     public void Move(Vector3Int targetPosition)
     {
-        _stateManager.GenerateNewState(gridPosition, targetPosition, this);
+        _stateManager.GenerateMovementState(gridPosition, targetPosition, this);
     }
 
     public void Update()
@@ -47,10 +44,7 @@ public abstract class Unit : GridObject, IMovable, ISelectable, IAttackable
         _stateManager.UpdateState(gridPosition);
     }
 
-    public void OnDeselect() { }
-    public void OnSelect() { }
-
-    public void RotateToMoveDirection(Vector3Int oldPosition, Vector3Int newPosition)
+    public void RotateToDirection(Vector3Int oldPosition, Vector3Int newPosition)
     {
         float xScale = (newPosition.x > oldPosition.x) ? 1f : -1f;
         _unitBody.transform.localScale = new Vector3(xScale, 1f, 1f);
@@ -65,4 +59,18 @@ public abstract class Unit : GridObject, IMovable, ISelectable, IAttackable
     {
         return speed;
     }
+
+    public float GetAttackSpeed()
+    {
+        return attackSpeed;
+    }
+
+    public void DestroySelf()
+    {
+        GameManager.Instance.gridData.DestroyObject(gridPosition, objectData.Size);
+        GameManager.Instance.objectManager.DestroyObject(index);
+    }
+
+    public void OnDeselect() { }
+    public void OnSelect() { }
 }

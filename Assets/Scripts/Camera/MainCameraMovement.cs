@@ -1,19 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls the main camera movement based on user input.
+/// </summary>
 public class MainCameraMovement : MonoBehaviour
 {
     [SerializeField] private InputManager _inputManager;
-    [SerializeField] private float _cameraSpeed;
     [SerializeField] private Vector2 _cameraXBounds;
     [SerializeField] private Vector2 _cameraYBounds;
+    [SerializeField] private float _cameraSpeed;
 
     private void Start()
     {
         _inputManager.OnMiddleClicked += CameraMovement;
     }
 
+    /// <summary>
+    /// Moves the camera based on mouse input while clamping within specified bounds.
+    /// </summary>
     private void CameraMovement()
     {
         float mouseX = Input.GetAxis("Mouse X") * _cameraSpeed * Time.deltaTime;

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Interface for placement states
+/// </summary>
 interface IPlacementState
 {
     void EndState();
