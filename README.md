@@ -10,7 +10,7 @@ Welcome to Unit Battle Simulator! This is a tactical strategy game where you com
 - Unit selection and movement controls
 
 ## Getting Started
-1. Clone the repository: `git clone [https://github.com/canodis/UnitBattleSimulator.git](https://github.com/canodis/UnitBattleSimulator)`
+1. Clone the repository: `git clone https://github.com/canodis/UnitBattleSimulator`
 2. Open the project in Unity.
 3. Run the game in Unity Editor with version 2021.
 
