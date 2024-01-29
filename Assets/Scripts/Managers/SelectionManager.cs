@@ -83,5 +83,6 @@ public class SelectionManager : MonoBehaviour
             return;
         }
         movableObject.Move(targetPosition);
+        DeselectObject();
     }
 }

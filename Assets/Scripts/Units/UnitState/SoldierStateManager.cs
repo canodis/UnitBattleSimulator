@@ -6,6 +6,8 @@ public class SoldierStateManager
 
     public void GenerateMovementState(Vector3Int startPosition, Vector3Int targetPosition, Soldier soldier)
     {
+        if (_soldierState is MovementState)
+            return;
         _soldierState = new MovementState(startPosition, targetPosition, soldier, this);
     }
 
@@ -24,6 +26,7 @@ public class SoldierStateManager
 
     public void SetSoldierState(ISoldierState state)
     {
-        _soldierState = state;
+        if (_soldierState as MovementState != null)
+            _soldierState = state;
     }
 }
