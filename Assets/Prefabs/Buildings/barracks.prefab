@@ -289,10 +289,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  units:
-  - {fileID: 5297856907823969617, guid: cc0fb1cb2a9baa840b23e6db714daf3f, type: 3}
-  - {fileID: 7617724878350510906, guid: a413ba35c1cb5ea409e9b287f6093d43, type: 3}
-  - {fileID: 8873659225231793829, guid: b8c1aa475afce3745bb63e9c2317bf85, type: 3}
+  soldiers:
+  - {fileID: 2271539672191812029, guid: cc0fb1cb2a9baa840b23e6db714daf3f, type: 3}
+  - {fileID: -8556121919965528157, guid: a413ba35c1cb5ea409e9b287f6093d43, type: 3}
+  - {fileID: 7749893194364208069, guid: b8c1aa475afce3745bb63e9c2317bf85, type: 3}
   _spawnLocationPreview: {fileID: 0}
 --- !u!50 &4044711779395134161
 Rigidbody2D:

@@ -3,72 +3,21 @@ using UnityEngine;
 /// <summary>
 /// Base abstract class for all units.
 /// </summary>
-public abstract class Unit : GridObject, IMovable, ISelectable, IAttackable
+public abstract class Unit : GridObject, ISelectable
 {
     [field: SerializeField] public int Id { get; set; }
-    [field: SerializeField] protected float attackDamage;
-    [field: SerializeField] protected float attackSpeed;
-    [field: SerializeField] protected float speed;
+    protected GameObject _unitBody;
+    protected Animator _animator;
 
-    private UnitStateManager _stateManager = new();
-    private Animator _animator;
-    private GameObject _unitBody;
-
-    protected void Start()
+    protected virtual void Start()
     {
-        _animator = GetComponent<Animator>();
         _unitBody = transform.Find("Body").gameObject;
-    }
-
-    public bool Attack(Vector3Int targetPosition)
-    {
-        GridObject target = GameManager.Instance.objectManager.GetGridObjectWithPosition(targetPosition);
-        if (target != null)
-        {
-            RotateToDirection(gridPosition, targetPosition);
-            _animator.Play("Attack");
-            target.TakeDamage(attackDamage);
-            return true;
-        }
-        return false;
-    }
-
-
-    public void Move(Vector3Int targetPosition)
-    {
-        _stateManager.GenerateMovementState(gridPosition, targetPosition, this);
-    }
-
-    public void Update()
-    {
-        _stateManager.UpdateState(gridPosition);
-    }
-
-    public void RotateToDirection(Vector3Int oldPosition, Vector3Int newPosition)
-    {
-        float xScale = (newPosition.x > oldPosition.x) ? 1f : -1f;
-        _unitBody.transform.localScale = new Vector3(xScale, 1f, 1f);
+        _animator = GetComponent<Animator>();
     }
 
     public void PlayAnimation(string animationName)
     {
         _animator.Play(animationName);
-    }
-
-    public float GetSpeed()
-    {
-        return speed;
-    }
-
-    public float GetAttackSpeed()
-    {
-        return attackSpeed;
-    }
-
-    public void DestroySelf()
-    {
-        GameManager.Instance.gridData.DestroyObject(gridPosition, objectData.Size);
-        GameManager.Instance.objectManager.DestroyObject(index);
     }
 
     public void OnDeselect() { }

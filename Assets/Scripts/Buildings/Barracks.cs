@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Barracks : Building, ISelectable, IMovable
 {
-    [SerializeField] private Unit[] units;
+    [SerializeField] private Soldier[] soldiers;
     [SerializeField] private SpawnLocationController _spawnLocationPreview;
 
     new void Start()
@@ -30,7 +30,7 @@ public class Barracks : Building, ISelectable, IMovable
     protected override void ShowInfo()
     {
         base.ShowInfo();
-        infoPanelController.ShowProductPanel(units, this);
+        infoPanelController.ShowProductPanel(soldiers, this);
     }
 
     public void SpawnUnit(int Id)

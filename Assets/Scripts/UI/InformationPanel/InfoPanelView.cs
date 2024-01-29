@@ -21,7 +21,7 @@ public class InfoPanelView : MonoBehaviour
             Instantiate(_productionButtonPrefab, _productionPanelButtonsParent.transform),
             (button) => { button.SetActive(true); },
             (button) => button.SetActive(false),
-            10);
+             9);
     }
 
     public void ShowInfo(InfoPanelModel objectData)
@@ -37,14 +37,14 @@ public class InfoPanelView : MonoBehaviour
     /// </summary>
     /// <param name="units">Array of units to display in the panel.</param>
     /// <param name="barracks">The barracks associated with the product panel.</param>
-    public void ShowProductPanel(Unit[] units, Barracks barracks)
+    public void ShowProductPanel(Soldier[] soldiers, Barracks barracks)
     {
         foreach (Transform child in _productionPanelButtonsParent.transform)
         {
             buttonsPool.Return(child.gameObject);
         }
         _productionPanel.SetActive(true);
-        foreach (Unit unit in units)
+        foreach (Unit unit in soldiers)
         {
             ObjectData objectData = GameManager.Instance.FindObjectDataWithId(unit.Id);
             GameObject button = buttonsPool.Get();
